@@ -1,0 +1,24 @@
+version: '3'
+networks:
+        kafka_zoo:
+                driver: bridge
+services:
+        zoo:
+                build:
+                        context: "./zookeeper"
+                        dockerfile: Dockerfile
+                ports: 
+                        - "2181:2181"
+                networks: 
+                        - kafka_zoo
+        kafka_custom:
+                hostname: "kafka"
+                build:
+                        context: "./kafka"
+                        dockerfile: "Dockerfile"
+                ports:
+                        - "9092:9092"
+                networks:
+                        - kafka_zoo
+                depends_on:
+                        - zoo              
